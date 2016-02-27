@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
 <!-- Active URL: http://ondras.zarovi.cz/sql/demo/ -->
@@ -45,6 +44,9 @@
 <row name="code" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
 <default>NULL</default></row>
+<row name="item_count" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="last_added" null="1" autoincrement="0">
 <datatype>DATETIME</datatype>
 <default>NULL</default></row>
@@ -89,5 +91,13 @@
 <part>id</part>
 </key>
 <comment>Lists are made up of todo items</comment>
+</table>
+<table x="426" y="277" name="rates">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
 </table>
 </sql>
