@@ -35,6 +35,16 @@ RSpec.describe List, type: :model do
 
       expect(list2).not_to be_valid
     end
+
+    it "defaults to item_count as 1" do
+      no_item_count = valid_attributes
+      no_item_count.delete(:item_count)
+
+      list = List.create(no_item_count)
+
+      expect(list.item_count).to eq(1)
+    end
+
   end
 
 end

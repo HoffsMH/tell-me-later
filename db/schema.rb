@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 20160227220929) do
 
   create_table "lists", force: :cascade do |t|
     t.string   "code"
-    t.integer  "item_count"
+    t.integer  "item_count",   default: 1
     t.datetime "last_changed"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "lists", ["code"], name: "index_lists_on_code", using: :btree
