@@ -45,6 +45,32 @@ RSpec.describe List, type: :model do
       expect(list.item_count).to eq(1)
     end
 
+    it "does not require a last_changed date " do
+      no_last_changed = valid_attributes.deep_dup
+      no_last_changed.delete(:last_changed)
+
+      list1 = List.create(no_last_changed)
+
+      expect(list1).to be_valid
+    end
+
+    it "can still set last_changed if needed" do
+      list1 = List.create(valid_attributes)
+
+      expect(list1.last_changed).to eq(valid_attributes[:last_changed])
+    end
+
+    it "defaults to last changed as the current date" do
+      no_last_changed = valid_attributes.deep_dup
+      no_last_changed.delete(:last_changed)
+
+      list1 = List.create(no_last_changed)
+      list1_time = list1.last_changed.strftime("%A, %d %b %Y %l:%M %p")
+      now = DateTime.now.utc.strftime("%A, %d %b %Y %l:%M %p")
+
+      expect(list1_time).to eq(now)
+    end
+
   end
 
 end
