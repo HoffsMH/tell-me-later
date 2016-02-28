@@ -51,5 +51,14 @@ RSpec.describe ListItem, type: :model do
 
       expect(list_item).not_to be_valid
     end
+
+    it "MUST have a content" do
+      no_content = valid_attributes.deep_dup
+      no_content.delete(:content)
+
+      list_item = ListItem.new(no_content)
+
+      expect(list_item).not_to be_valid
+    end
   end
 end
