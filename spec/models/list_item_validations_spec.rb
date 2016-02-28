@@ -60,5 +60,22 @@ RSpec.describe ListItem, type: :model do
 
       expect(list_item).not_to be_valid
     end
+
+    it "has a show_time field that defaults to now" do
+      no_show_time = valid_attributes.deep_dup
+      no_show_time.delete(:show_time)
+
+      list_item = ListItem.create(no_show_time)
+
+      list_item_show_time = list_item
+                              .show_time
+                              .strftime("%A, %d %b %Y %l:%M %p")
+
+      now = DateTime.now.utc
+                      .strftime("%A, %d %b %Y %l:%M %p")
+
+      expect(list_item_show_time).to eq(now)
+    end
+
   end
 end
