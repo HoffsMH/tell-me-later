@@ -1,4 +1,6 @@
 class List < ActiveRecord::Base
+  has_many :list_items
+
   validates :code, presence: true, uniqueness: true
 
   before_create :generate_initial_last_changed
