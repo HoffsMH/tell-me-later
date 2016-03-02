@@ -64,7 +64,6 @@ RSpec.describe ListHandler, type: :model do
       result = ListHandler.create_item(params)
       id = result[:list_item]["id"]
       list_item = ListItem.find_by(id: id)
-      binding.pry
 
       expect(list_item.list).not_to be_nil
       expect(List.all.count).to eq(old_list_count)
