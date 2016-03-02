@@ -1,13 +1,13 @@
 class ListHandler
   def self.attach_list(params)
-    list = List.find_by(code: params[:code])
-
-    params.delete(:code)
+    new_params = params.deep_dup
+    list = List.find_by(code: new_params[:code])
+    new_params.delete(:code)
 
     !list ? list = List.create(code: List.generate_code) : list = list
 
-    params[:list_id] = list.id
-    ListItem.new(params)
+    new_params[:list_id] = list.id
+    ListItem.new(new_params)
   end
 
   def self.create_item(params)
