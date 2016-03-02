@@ -1,6 +1,7 @@
 class ListHandler
   def self.attach_list(params)
     list = List.find_by(code: params[:code])
+
     params.delete(:code)
 
     !list ? list = List.create(code: List.generate_code) : list = list
