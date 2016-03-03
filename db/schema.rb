@@ -11,24 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160228232614) do
+ActiveRecord::Schema.define(version: 20160304031920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "list_items", force: :cascade do |t|
-    t.integer  "list_id"
-    t.integer  "priority",   default: 5
+  create_table "todo_items", force: :cascade do |t|
+    t.integer  "todo_list_id"
+    t.integer  "priority",     default: 5
     t.text     "title"
     t.text     "content"
     t.datetime "show_time"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
-  add_index "list_items", ["list_id"], name: "index_list_items_on_list_id", using: :btree
+  add_index "todo_items", ["todo_list_id"], name: "index_todo_items_on_todo_list_id", using: :btree
 
-  create_table "lists", force: :cascade do |t|
+  create_table "todo_lists", force: :cascade do |t|
     t.string   "code"
     t.integer  "item_count",   default: 1
     t.datetime "last_changed"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20160228232614) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "lists", ["code"], name: "index_lists_on_code", using: :btree
+  add_index "todo_lists", ["code"], name: "index_todo_lists_on_code", using: :btree
 
-  add_foreign_key "list_items", "lists"
+  add_foreign_key "todo_items", "todo_lists"
 end
