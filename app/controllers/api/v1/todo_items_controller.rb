@@ -1,13 +1,13 @@
-class Api::V1::ListItemsController < ApplicationController
+class Api::V1::TodoItemsController < ApplicationController
   respond_to :json
 
   def create
-    render json: ListHandler.create_item(list_item_params)
+    render json: ListHandler.create_item(todo_item_params)
   end
 
   private
-  def list_item_params
-    params.require("list_item").permit(:list_id,
+  def todo_item_params
+    params.require("todo_item").permit(:todo_list_id,
                                        :code,
                                        :title,
                                        :content,
