@@ -25,7 +25,7 @@ gem 'puma-rails'
 gem 'responders'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'simplecov'
   gem 'pry-rails'
   gem 'rspec'
   gem 'rspec-rails'
