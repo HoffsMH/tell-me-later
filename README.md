@@ -1,5 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/HoffsMH/todo-timer.png?label=ready&title=Ready)](https://waffle.io/HoffsMH/todo-timer)
 [![Build Status](https://travis-ci.org/HoffsMH/todo-timer.svg?branch=master)](https://travis-ci.org/HoffsMH/todo-timer)
+[![Coverage Status](https://coveralls.io/repos/github/HoffsMH/todo-timer/badge.svg?branch=master)](https://coveralls.io/github/HoffsMH/todo-timer?branch=master)
 
 # [Todo-timer](https://www.google.com)
 Normal todo-list quickly become too cluttered and often overwhelming when the truth is at any given time we should only be focusing on one or 2 things at a time.
