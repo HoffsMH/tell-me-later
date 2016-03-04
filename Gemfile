@@ -26,6 +26,7 @@ gem 'responders'
 
 group :development, :test do
   gem 'simplecov'
+  gem 'coveralls'
   gem 'pry-rails'
   gem 'rspec'
   gem 'rspec-rails'
