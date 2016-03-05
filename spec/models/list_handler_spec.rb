@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ListHandler, type: :model do
-  describe "#create_item" do
+  describe ".create_item" do
     context "when given params that do not include a code" do
       let!(:params) do
         {
@@ -87,5 +87,17 @@ RSpec.describe ListHandler, type: :model do
         expect(todo_list.last_changed).not_to eq(old_last_changed)
       end
     end
+  end
+
+  describe ".delete_item" do
+    context "when neither the todo_item nor the todo_list exists currently" do
+      it "returns a 404 error " do
+        result = ListHandler.delete_item(0) #doesn't exist
+
+        expect(result[:status]).to eq(404)
+        expect(result[:message][:error]).not_to be_nil
+      end
+    end
+
   end
 end

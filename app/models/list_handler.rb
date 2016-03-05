@@ -21,5 +21,4 @@ class ListHandler
         {todo_item: todo_item.errors.full_messages}
       end
   end
-
 end
