@@ -34,13 +34,13 @@ RSpec.describe TodoList, type: :model do
       expect(todo_list2).not_to be_valid
     end
 
-    it "defaults to item_count as 1" do
+    it "defaults to item_count as 0" do
       no_item_count = valid_attributes
       no_item_count.delete(:item_count)
 
       list = TodoList.create(no_item_count)
 
-      expect(list.item_count).to eq(1)
+      expect(list.item_count).to eq(0)
     end
 
     it "does not require a last_changed date " do
