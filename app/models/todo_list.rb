@@ -12,4 +12,8 @@ class TodoList < ActiveRecord::Base
   def generate_initial_last_changed
    self.last_changed.nil? ? ( self.last_changed = DateTime.now ) : nil
   end
+
+  def item_added
+    update(item_count: item_count + 1, last_changed: Time.now)
+  end
 end
