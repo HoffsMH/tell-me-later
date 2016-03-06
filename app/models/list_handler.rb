@@ -21,26 +21,34 @@ class ListHandler
       end
   end
 
-  def self.delete_item(id)
-  end
-
-  def groom_response(code, resource)
-
+  def self.groom_response(code, resource)
     {
       status:  code,
-      message: { code_messages(code) },
-      data: { resource }
+      message: code_messages[code],
+      # data: { resource }
     }
   end
 
-  def code_messages(code)
+  def self.code_messages
     {
-      404: {
+      404 => {
         error: "resource not found."
-      }
-      200: {
+      },
+      200 => {
         success: "success"
       }
     }
   end
+
+  def self.delete_item(id)
+    binding.pry
+    todo_item = TodoItem.find_by(id: id)
+    if todo_item
+      groom_response(200, todo_item.as_json)
+    else
+      groom_response(404, todo_item.as_json)
+    end
+  end
+
+
 end
