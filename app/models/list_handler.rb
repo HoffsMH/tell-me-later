@@ -31,20 +31,17 @@ class ListHandler
 
   def self.code_messages
     {
-      404 => {
-        error: "resource not found."
-      },
-      200 => {
-        success: "success"
-      }
+      404 => { error: "resource not found." },
+      204 => { success: "success" },
+      200 => { success: "success" }
     }
   end
 
   def self.delete_item(id)
-    binding.pry
     todo_item = TodoItem.find_by(id: id)
     if todo_item
-      groom_response(200, todo_item.as_json)
+      todo_item.delete
+      groom_response(204, todo_item.as_json)
     else
       groom_response(404, todo_item.as_json)
     end

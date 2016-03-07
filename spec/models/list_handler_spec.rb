@@ -98,6 +98,41 @@ RSpec.describe ListHandler, type: :model do
         expect(result[:message][:error]).not_to be_nil
       end
     end
+    context "when the todo_list exist but the todo_item is not found" do
+      it "returns a 404 error " do
+        result = ListHandler.delete_item(0) #doesn't exist
+
+        expect(result[:status]).to eq(404)
+        expect(result[:message][:error]).not_to be_nil
+      end
+    end
+    context "when the todo_item is found and there are other todo_items on its list" do
+      before(:each) do
+        @todo_list = TodoList.create(code: TodoList.generate_code)
+        params = {
+          code: @todo_list.code,
+          title: "valid Title",
+          content: "valid content"
+        }
+        ListHandler.create_item(params)
+        ListHandler.create_item(params)
+      end
+      it "responds with 204" do
+        todo_item = @todo_list.todo_items.first
+        result = ListHandler.delete_item(todo_item.id)
+
+        expect(result[:status]).to eq(204)
+        expect(result[:message][:success]).not_to be_nil
+      end
+      it "deletes the item" do
+        old_item_count = TodoItem.all.count
+        todo_item = @todo_list.todo_items.first
+        result = ListHandler.delete_item(todo_item.id)
+
+        expect(TodoItem.all.count).to eq(old_item_count - 1)
+      end
+      
+    end
 
   end
 end
