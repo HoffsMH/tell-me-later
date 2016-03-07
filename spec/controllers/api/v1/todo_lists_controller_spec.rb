@@ -27,7 +27,7 @@ RSpec.describe Api::V1::TodoListsController, type: :controller do
        body = JSON.parse(response.body, symbolize_names: true)
 
        expect(body).not_to be_nil
-       expect(body[:todo_list].count).to eq(items_count)
+       expect(body[:data][:todo_list].count).to eq(items_count)
      end
    end
    context "when given a code for a todo_list that does not exist" do
@@ -36,7 +36,7 @@ RSpec.describe Api::V1::TodoListsController, type: :controller do
        get :show, code: code
        body = JSON.parse(response.body, symbolize_names: true)
 
-       expect(body[:todo_list]).to be_a(String)
+       expect(body[:message][:error]).to be_a(String)
      end
    end
  end
