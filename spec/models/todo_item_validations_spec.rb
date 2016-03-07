@@ -5,7 +5,6 @@ RSpec.describe TodoItem, type: :model do
     let!(:valid_attributes) do
       valid_list_attributes = {
         code: "valid code",
-        item_count: 42,
         last_changed: "Sat, 27 Feb 2016 22:39:42 UTC +00:00"
       }
       todo_list = TodoList.create(valid_list_attributes)
