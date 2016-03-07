@@ -123,6 +123,37 @@ RSpec.describe ListHandler, type: :model do
       end
 
     end
+    context "when todo_item is found and it is the only todo_item on the list" do
+      before(:each) do
+        @todo_list = TodoList.create(code: TodoList.generate_code)
+        params = {
+          code: @todo_list.code,
+          title: "valid Title",
+          content: "valid content"
+        }
+        ListHandler.create_item(params)
+      end
+      it "responds with 204" do
+        todo_item = @todo_list.todo_items.first
+        result = ListHandler.delete_item(todo_item.id)
 
+        expect(result[:status]).to eq(204)
+        expect(result[:message][:success]).not_to be_nil
+      end
+      it "deletes the item" do
+        old_item_count = TodoItem.all.count
+        todo_item = @todo_list.todo_items.first
+        result = ListHandler.delete_item(todo_item.id)
+
+        expect(TodoItem.all.count).to eq(old_item_count - 1)
+      end
+      it "deletes the list" do
+        old_item_count = TodoItem.all.count
+        todo_item = @todo_list.todo_items.first
+        result = ListHandler.delete_item(todo_item.id)
+
+        expect(TodoList.find_by(id: @todo_list.id)).to be_nil
+      end
+    end
   end
 end
