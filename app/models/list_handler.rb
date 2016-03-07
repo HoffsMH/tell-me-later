@@ -4,10 +4,8 @@ module ListHandler
     # we dont want users to be able to create their own codes
     # since that would not be secure.
     todo_list = TodoList.find_by(code: code)
-    if !todo_list
-      todo_list = TodoList.create(code: TodoList.generate_code)
-    end
-    todo_list
+
+    !todo_list ? todo_list = TodoList.generate : todo_list
   end
 
   def self.attach_list(params)
