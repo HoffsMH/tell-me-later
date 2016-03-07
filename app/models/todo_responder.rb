@@ -1,9 +1,9 @@
 module TodoResponder
   def self.code_messages(code, message)
     responses = {
-      404 => { error:   message || "resource not found." },
-      204 => { success: message ||"success" },
-      200 => { success: message || "success" },
+      404 => { error:   message || "Resource not Found." },
+      204 => { success: message || "Success" },
+      200 => { success: message || "Success" },
       422 => { error:   message || "Unprocessable Entity"}
     }
     responses[code]
