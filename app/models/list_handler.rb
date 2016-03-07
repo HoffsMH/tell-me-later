@@ -14,36 +14,32 @@ class ListHandler
   def self.create_item(params)
       todo_item = attach_list(params)
       if todo_item.save
-        todo_item.todo_list.item_added
-        {todo_item: todo_item.as_json}
+        todo_item.todo_list.items_changed
+        TodoResponder.
+         groom_response(code: 204,
+                        resource: {todo_item: todo_item.as_json},
+                        message: "Resource Created")
       else
-        {todo_item: todo_item.errors.full_messages}
+        TodoResponder.
+         groom_response(code: 422,
+                        resource: {todo_item: nil},
+                        message: todo_item.errors.full_messages.join(" "))
       end
-  end
-
-  def self.groom_response(code, resource)
-    {
-      status:  code,
-      message: code_messages[code],
-      # data: { resource }
-    }
-  end
-
-  def self.code_messages
-    {
-      404 => { error: "resource not found." },
-      204 => { success: "success" },
-      200 => { success: "success" }
-    }
   end
 
   def self.delete_item(id)
     todo_item = TodoItem.find_by(id: id)
     if todo_item
       todo_item.delete
-      groom_response(204, todo_item.as_json)
+      todo_item.todo_list.items_changed
+      TodoResponder.
+       groom_response(code: 204,
+                      resource: {todo_item: todo_item.as_json},
+                      message: "Resource Deleted")
     else
-      groom_response(404, todo_item.as_json)
+      TodoResponder.
+        groom_response(code: 422,
+                     resource: {todo_item: todo_item.as_json})
     end
   end
 
