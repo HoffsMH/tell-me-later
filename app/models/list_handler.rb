@@ -1,47 +1,40 @@
-class ListHandler
-  def self.attach_list(params)
-    new_params = params.deep_dup
-    todo_list = TodoList.find_by(code: params[:code])
-    new_params.delete(:code)
-
+module ListHandler
+  def self.find_or_create_list(code)
+    # not using find_or_create_by here because
+    # we dont want users to be able to create their own codes
+    # since that would not be secure.
+    todo_list = TodoList.find_by(code: code)
     if !todo_list
       todo_list = TodoList.create(code: TodoList.generate_code)
     end
-    new_params[:todo_list_id] = todo_list.id
-    TodoItem.new(new_params)
+    todo_list
+  end
+
+  def self.attach_list(params)
+    todo_list = find_or_create_list(params[:code])
+    params.delete(:code)
+
+    params[:todo_list_id] = todo_list.id
+    TodoItem.new(params)
   end
 
   def self.create_item(params)
       todo_item = attach_list(params)
       if todo_item.save
-        todo_item.todo_list.items_changed
-        TodoResponder.
-         groom_response(code: 204,
-                        resource: {todo_item: todo_item.as_json},
-                        message: "Resource Created")
+        todo_item.list_changed!
+        TodoResponder.resource_created(todo_item)
       else
-        TodoResponder.
-         groom_response(code: 422,
-                        resource: {todo_item: nil},
-                        message: todo_item.errors.full_messages.join(" "))
+        TodoResponder.unprocessable_entity(todo_item)
       end
   end
 
   def self.delete_item(id)
     todo_item = TodoItem.find_by(id: id)
-    if todo_item
-      todo_item.delete
-      todo_item.todo_list.items_changed
-      TodoResponder.
-       groom_response(code: 204,
-                      resource: {todo_item: todo_item.as_json},
-                      message: "Resource Deleted")
+    if todo_item && todo_item.delete
+      todo_item.list_changed!
+      TodoResponder.resource_deleted(todo_item)
     else
-      TodoResponder.
-        groom_response(code: 404,
-                     resource: {todo_item: todo_item.as_json})
+      TodoResponder.resource_not_found(:todo_item)
     end
   end
-
-
 end

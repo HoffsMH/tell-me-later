@@ -17,4 +17,12 @@ class TodoList < ActiveRecord::Base
     self.last_changed = DateTime.now
     self.save
   end
+
+  def type
+    :todo_list
+  end
+
+  def items
+    todo_items
+  end
 end

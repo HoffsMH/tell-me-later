@@ -10,4 +10,16 @@ class TodoItem < ActiveRecord::Base
   def generate_initial_show_time
     self.show_time.nil? ? ( self.show_time = DateTime.now ) : nil
   end
+
+  def type
+    :todo_item
+  end
+
+  def list
+    todo_list
+  end
+
+  def list_changed!
+    list.items_changed
+  end
 end
