@@ -7,7 +7,6 @@ RSpec.describe TodoList, type: :model do
   describe "#items_changed" do
     before(:each) do
       @todo_list = TodoList.create(code: TodoList.generate_code,
-                      item_count: 3,
                       last_changed: Time.now - 10 * 60 * 60)
     end
     it "changes last_changed to current time" do

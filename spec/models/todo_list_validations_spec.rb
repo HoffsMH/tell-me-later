@@ -5,7 +5,6 @@ RSpec.describe TodoList, type: :model do
    let!(:valid_attributes) do
      {
        code: "valid code",
-       item_count: 42,
        last_changed: "Sat, 27 Feb 2016 22:39:42 UTC +00:00"
      }
    end
@@ -32,15 +31,6 @@ RSpec.describe TodoList, type: :model do
       todo_list2 = TodoList.new(non_unique_code)
 
       expect(todo_list2).not_to be_valid
-    end
-
-    it "defaults to item_count as 0" do
-      no_item_count = valid_attributes
-      no_item_count.delete(:item_count)
-
-      list = TodoList.create(no_item_count)
-
-      expect(list.item_count).to eq(0)
     end
 
     it "does not require a last_changed date " do

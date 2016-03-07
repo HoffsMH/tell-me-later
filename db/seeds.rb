@@ -24,6 +24,5 @@ todo_list_count.times do |todo_list_num|
                  content: content,
                  show_time: show_time,
                  priority: [*1..5].sample)
-    todo_list.item_count += 1;
   end
 end
