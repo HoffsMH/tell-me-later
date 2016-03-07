@@ -84,7 +84,7 @@ RSpec.describe ListHandler, type: :model do
       it "returns a 422 error " do
         result = ListHandler.delete_item(0) #doesn't exist
 
-        expect(result[:status]).to eq(422)
+        expect(result[:status]).to eq(404)
         expect(result[:message][:error]).not_to be_nil
       end
     end
@@ -92,7 +92,7 @@ RSpec.describe ListHandler, type: :model do
       it "returns a 422 error " do
         result = ListHandler.delete_item(0) #doesn't exist
 
-        expect(result[:status]).to eq(422)
+        expect(result[:status]).to eq(404)
         expect(result[:message][:error]).not_to be_nil
       end
     end

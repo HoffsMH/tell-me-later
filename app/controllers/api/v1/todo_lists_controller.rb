@@ -5,7 +5,7 @@ class Api::V1::TodoListsController < ApplicationController
     todo_list = TodoList.find_by(code: todo_list_params)
     if todo_list
       output = TodoResponder
-        .groom_response(code: 204, 
+        .groom_response(code: 201, 
                         resource:
                           {todo_list: todo_list.todo_items.as_json})
 

@@ -38,7 +38,7 @@ class ListHandler
                       message: "Resource Deleted")
     else
       TodoResponder.
-        groom_response(code: 422,
+        groom_response(code: 404,
                      resource: {todo_item: todo_item.as_json})
     end
   end
