@@ -20,6 +20,6 @@ class TodoItem < ActiveRecord::Base
   end
 
   def list_changed!
-    list.items_changed
+    list.items.empty? ? list.delete : list.items_changed
   end
 end
