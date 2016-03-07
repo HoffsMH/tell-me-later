@@ -7,7 +7,6 @@ class ListHandler
     if !todo_list
       todo_list = TodoList.create(code: TodoList.generate_code)
     end
-
     new_params[:todo_list_id] = todo_list.id
     TodoItem.new(new_params)
   end
@@ -21,5 +20,32 @@ class ListHandler
         {todo_item: todo_item.errors.full_messages}
       end
   end
+
+  def self.groom_response(code, resource)
+    {
+      status:  code,
+      message: code_messages[code],
+      # data: { resource }
+    }
+  end
+
+  def self.code_messages
+    {
+      404 => { error: "resource not found." },
+      204 => { success: "success" },
+      200 => { success: "success" }
+    }
+  end
+
+  def self.delete_item(id)
+    todo_item = TodoItem.find_by(id: id)
+    if todo_item
+      todo_item.delete
+      groom_response(204, todo_item.as_json)
+    else
+      groom_response(404, todo_item.as_json)
+    end
+  end
+
 
 end

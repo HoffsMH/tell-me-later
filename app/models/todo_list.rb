@@ -16,4 +16,8 @@ class TodoList < ActiveRecord::Base
   def item_added
     update(item_count: item_count + 1, last_changed: Time.now)
   end
+
+  def item_deleted
+    update(item_count: item_count - 1, last_changed: Time.now)
+  end
 end
