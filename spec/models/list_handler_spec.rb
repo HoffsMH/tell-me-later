@@ -15,11 +15,12 @@ RSpec.describe ListHandler, type: :model do
         old_todo_list_count = TodoList.all.count
 
         result = ListHandler.create_item(params)
-        id = result[:todo_item]["id"]
+
+        id = result[:data][:todo_item]["id"]
         todo_item = TodoItem.find_by(id: id)
 
         expect(todo_item.todo_list).not_to be_nil
-        expect(TodoList.all.count).to eq(old_todo_list_count + 1 )
+        expect(TodoList.all.count).to eq(old_todo_list_count + 1)
       end
 
     end
@@ -38,7 +39,7 @@ RSpec.describe ListHandler, type: :model do
         old_todo_list_count = TodoList.all.count
 
         result = ListHandler.create_item(params)
-        id = result[:todo_item]["id"]
+        id = result[:data][:todo_item]["id"]
         todo_item = TodoItem.find_by(id: id)
 
         expect(todo_item.todo_list).not_to be_nil
@@ -48,61 +49,50 @@ RSpec.describe ListHandler, type: :model do
     end
 
     context "when given params that include a code for a todo_list that does exist" do
-      let!(:params) do
-        todo_list = TodoList.create(code: TodoList.generate_code);
-        {
+      before(:each) do
+        @todo_list = TodoList.create(code: TodoList.generate_code);
+        @params = {
           title: "valid title",
           content: "valid content",
           show_time: "1/2/2017 12:34PM",
           priority: 5,
-          code: todo_list.code
+          code: @todo_list.code
         }
       end
+
       it "adds the item to the todo_list" do
-        old_params     = params.deep_dup
-        old_todo_list_count = TodoList.all.count
+        old_count = @todo_list.todo_items.count
 
-        result = ListHandler.create_item(params)
-        id = result[:todo_item]["id"]
-        todo_item = TodoItem.find_by(id: id)
-
-        expect(todo_item.todo_list).not_to be_nil
-        expect(TodoList.all.count).to eq(old_todo_list_count)
-        expect(todo_item.todo_list.code).to eq(old_params[:code])
+        ListHandler.create_item(@params)
+        new_count = @todo_list.todo_items.count
+        expect(new_count).to eq(old_count + 1)
       end
-      it "updates the item_count and last_changed field of the corresponding todo_list" do
-        old_params               = params.deep_dup
-        old_todo_list_count      = TodoList.all.count
-        old_item_count           = TodoList.first.item_count
-        old_last_changed         = TodoList.first.last_changed
+      it "updates last_changed field of the corresponding todo_list" do
+        old_last_changed = @todo_list.last_changed
+        sleep 2
+        ListHandler.create_item(@params)
 
+        new_last_changed = TodoList.find(@todo_list.id).last_changed
 
-        result = ListHandler.create_item(params)
-        id = result[:todo_item]["id"]
-        todo_item = TodoItem.find_by(id: id)
-
-        todo_list = todo_item.todo_list
-
-        expect(todo_list.item_count).to eq(old_item_count + 1)
-        expect(todo_list.last_changed).not_to eq(old_last_changed)
+        expect(new_last_changed).not_to eq(old_last_changed)
       end
     end
   end
 
   describe ".delete_item" do
     context "when neither the todo_item nor the todo_list exists currently" do
-      it "returns a 404 error " do
+      it "returns a 422 error " do
         result = ListHandler.delete_item(0) #doesn't exist
 
-        expect(result[:status]).to eq(404)
+        expect(result[:status]).to eq(422)
         expect(result[:message][:error]).not_to be_nil
       end
     end
     context "when the todo_list exist but the todo_item is not found" do
-      it "returns a 404 error " do
+      it "returns a 422 error " do
         result = ListHandler.delete_item(0) #doesn't exist
 
-        expect(result[:status]).to eq(404)
+        expect(result[:status]).to eq(422)
         expect(result[:message][:error]).not_to be_nil
       end
     end
@@ -131,7 +121,7 @@ RSpec.describe ListHandler, type: :model do
 
         expect(TodoItem.all.count).to eq(old_item_count - 1)
       end
-      
+
     end
 
   end

@@ -18,9 +18,9 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
           it 'creates a new list and returns json form of the new list item' do
             post :create, todo_item: valid_todo_item
             output = JSON.parse(response.body, symbolize_names: true)
-            output[:todo_item].keys.each do |key|
+            output[:data][:todo_item].keys.each do |key|
               if valid_todo_item[key] && (key != :show_time)
-                expect(output[:todo_item][key]).to eq(valid_todo_item[key])
+                expect(output[:data][:todo_item][key]).to eq(valid_todo_item[key])
               end
             end
           end
@@ -29,7 +29,7 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
             post :create, todo_item: valid_todo_item
             output = JSON.parse(response.body, symbolize_names: true)
             input_date = DateTime.parse(valid_todo_item[:show_time])
-            output_date = DateTime.parse(output[:todo_item][:show_time])
+            output_date = DateTime.parse(output[:data][:todo_item][:show_time])
 
             expect(output_date.utc).to eq(input_date.utc)
           end
@@ -48,7 +48,7 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
               post :create, todo_item: no_show_time
               output = JSON.parse(response.body, symbolize_names: true)
 
-              output_date = DateTime.parse(output[:todo_item][:show_time]).utc
+              output_date = DateTime.parse(output[:data][:todo_item][:show_time]).utc
               .strftime("%A, %d %b %Y %l:%M %p")
               now = DateTime.now.utc
               .strftime("%A, %d %b %Y %l:%M %p")
@@ -68,13 +68,12 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
           }
         end
 
-        it "returns an error message in place of the resulting item" do
+        it "returns an error message" do
           post :create, todo_item: invalid_todo_item
-          output = JSON.parse(response.body, symbolize_names: true)[:todo_item]
-          output.each do |message|
-            expect(message).to be_a(String)
-            expect(message).to include("can't")
-          end
+          output = JSON.parse(response.body, symbolize_names: true)
+          expect(output[:status]).to eq (422)
+
+          expect(output[:message][:error]).not_to be_nil
         end
       end
     end
