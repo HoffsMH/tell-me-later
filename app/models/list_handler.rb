@@ -22,9 +22,9 @@ module ListHandler
       todo_item = attach_list(params)
       if todo_item.save
         todo_item.list_changed!
-        TodoResponder.resource_created(todo_item)
+        TodoResponses.resource_created(todo_item)
       else
-        TodoResponder.unprocessable_entity(todo_item)
+        TodoResponses.unprocessable_entity(todo_item)
       end
   end
 
@@ -32,9 +32,9 @@ module ListHandler
     todo_item = TodoItem.find_by(id: id)
     if todo_item && todo_item.delete
       todo_item.list_changed!
-      TodoResponder.resource_deleted(todo_item)
+      TodoResponses.resource_deleted(todo_item)
     else
-      TodoResponder.resource_not_found(:todo_item)
+      TodoResponses.resource_not_found(:todo_item)
     end
   end
 end
