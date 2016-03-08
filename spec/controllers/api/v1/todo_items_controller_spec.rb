@@ -88,7 +88,7 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
         @todo_item = @todo_list.todo_items.first
       end
       it "it deletes the item" do
-        delete :destroy, {id: @todo_item.id, todo_item: @todo_item.attributes}
+        delete :destroy, {id: @todo_item.id, todo_item: {code: @todo_list.code}}
 
         body = JSON.parse(response.body, symbolize_names: true)
 

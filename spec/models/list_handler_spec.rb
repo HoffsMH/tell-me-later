@@ -82,7 +82,7 @@ RSpec.describe ListHandler, type: :model do
   describe ".delete_item" do
     context "when neither the todo_item nor the todo_list exists currently" do
       it "returns a 422 error " do
-        result = ListHandler.delete_item(0) #doesn't exist
+        result = ListHandler.delete_item(nil, {code: "doesn't exist"}) #doesn't exist
 
         expect(result[:status]).to eq(404)
         expect(result[:message][:error]).not_to be_nil
@@ -90,7 +90,7 @@ RSpec.describe ListHandler, type: :model do
     end
     context "when the todo_list exist but the todo_item is not found" do
       it "returns a 422 error " do
-        result = ListHandler.delete_item(0) #doesn't exist
+        result = ListHandler.delete_item(nil, {code: "doesn't exist"}) #doesn't exist
 
         expect(result[:status]).to eq(404)
         expect(result[:message][:error]).not_to be_nil
@@ -109,7 +109,7 @@ RSpec.describe ListHandler, type: :model do
       end
       it "responds with 204" do
         todo_item = @todo_list.todo_items.first
-        result = ListHandler.delete_item(todo_item.id)
+        result = ListHandler.delete_item(todo_item, {code: @todo_list.code})
 
         expect(result[:status]).to eq(204)
         expect(result[:message][:success]).not_to be_nil
@@ -117,7 +117,7 @@ RSpec.describe ListHandler, type: :model do
       it "deletes the item" do
         old_item_count = TodoItem.all.count
         todo_item = @todo_list.todo_items.first
-        result = ListHandler.delete_item(todo_item.id)
+        result = ListHandler.delete_item(todo_item, {code: @todo_list.code})
 
         expect(TodoItem.all.count).to eq(old_item_count - 1)
       end
@@ -135,7 +135,7 @@ RSpec.describe ListHandler, type: :model do
       end
       it "responds with 204" do
         todo_item = @todo_list.todo_items.first
-        result = ListHandler.delete_item(todo_item.id)
+        result = ListHandler.delete_item(todo_item,  {code: @todo_list.code})
 
         expect(result[:status]).to eq(204)
         expect(result[:message][:success]).not_to be_nil
@@ -143,14 +143,14 @@ RSpec.describe ListHandler, type: :model do
       it "deletes the item" do
         old_item_count = TodoItem.all.count
         todo_item = @todo_list.todo_items.first
-        result = ListHandler.delete_item(todo_item.id)
+        result = ListHandler.delete_item(todo_item,  {code: @todo_list.code})
 
         expect(TodoItem.all.count).to eq(old_item_count - 1)
       end
       it "deletes the list" do
         old_item_count = TodoItem.all.count
         todo_item = @todo_list.todo_items.first
-        result = ListHandler.delete_item(todo_item.id)
+        result = ListHandler.delete_item(todo_item,  {code: @todo_list.code})
 
         expect(TodoList.find_by(id: @todo_list.id)).to be_nil
       end
@@ -180,7 +180,7 @@ RSpec.describe ListHandler, type: :model do
         end
       end
       it "updates the item" do
-        result = ListHandler.update_item(@todo_item.id, valid_params)
+        result = ListHandler.update_item(@todo_item, valid_params)
 
         updated_item = TodoItem.find_by(id: @todo_item.id)
 
