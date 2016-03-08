@@ -8,11 +8,15 @@ module ListHandler
     !todo_list ? todo_list = TodoList.generate : todo_list
   end
 
-  def self.attach_list(params)
+  def self.convert_code_to_id(params)
     todo_list = find_or_create_list(params[:code])
-    params.delete(:code)
-
     params[:todo_list_id] = todo_list.id
+    params.delete(:code)
+    params
+  end
+
+  def self.attach_list(params)
+    params = convert_code_to_id(params)
     TodoItem.new(params)
   end
 
@@ -31,6 +35,19 @@ module ListHandler
     if todo_item && todo_item.delete
       todo_item.list_changed!
       TodoResponses.resource_deleted(todo_item)
+    else
+      TodoResponses.resource_not_found(:todo_item)
+    end
+  end
+
+  def self.update_item(id, params)
+    params = convert_code_to_id(params)
+    todo_item = TodoItem.find_by(id: id)
+    if todo_item && todo_item.update(params)
+      todo_item.list_changed!
+      TodoResponses.resource_updated(todo_item)
+    elsif todo_item
+      TodoResponses.unprocessable_entity(todo_item)
     else
       TodoResponses.resource_not_found(:todo_item)
     end
