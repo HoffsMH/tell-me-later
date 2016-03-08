@@ -7,7 +7,12 @@ class Api::V1::TodoItemsController < ApplicationController
   end
 
   def destroy
-    output = ListHandler.delete_item(todo_item_params[:id])
+    output = ListHandler.delete_item(id)
+    render json: output, status: output[:status]
+  end
+
+  def update
+    output = ListHandler.update_item(id, todo_item_params)
     render json: output, status: output[:status]
   end
 
@@ -18,5 +23,8 @@ class Api::V1::TodoItemsController < ApplicationController
                                        :title,
                                        :content,
                                        :show_time)
+  end
+  def id
+    params.require("id")
   end
 end

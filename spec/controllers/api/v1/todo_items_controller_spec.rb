@@ -88,7 +88,8 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
         @todo_item = @todo_list.todo_items.first
       end
       it "it deletes the item" do
-        delete :destroy, {todo_item: @todo_item.attributes}
+        delete :destroy, {id: @todo_item.id, todo_item: @todo_item.attributes}
+
         body = JSON.parse(response.body, symbolize_names: true)
 
         expect(@todo_list.todo_items.count).to eq(0)
@@ -103,11 +104,48 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
                                   content: "doesn't exist")
       end
       it "returns an error message" do
-        delete :destroy, {todo_item: @todo_item.attributes}
+        delete :destroy, {id: @todo_item.id, todo_item: @todo_item.attributes}
         body = JSON.parse(response.body, symbolize_names: true)
 
         expect(body[:status]).to eq(404)
         expect(body[:message][:error]).not_to be_nil
+      end
+    end
+  end
+
+  describe "PUT #update" do
+    context "when the todo_item exists" do
+      before(:each) do
+        @todo_list = TodoList.create(code: TodoList.generate_code)
+        ListHandler.create_item(code: @todo_list.code,
+                                title: "valid title",
+                                content: "valid content")
+        @todo_item = @todo_list.todo_items.first
+      end
+      context "and the parameters are valid" do
+        before(:each) do
+          def valid_params
+            valid_params = {
+              id: @todo_item.id,
+              code: @todo_list.code,
+              title: "new title",
+              content: "new content",
+              priority: 3
+            }
+            valid_params
+          end
+        end
+        it "responds with the updated items" do
+          put :update, {id: @todo_item.id, todo_item: valid_params}
+
+          body = JSON.parse(response.body, symbolize_names: true)
+          todo_item = body[:data][:todo_item]
+
+          expect(body[:status]).not_to be_nil
+          expect(body[:message][:success]).not_to be_nil
+          expect(todo_item[:title]).to eq("new title")
+          expect(todo_item[:content]).to eq("new content")
+        end
       end
     end
   end

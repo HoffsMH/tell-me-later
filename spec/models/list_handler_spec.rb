@@ -156,4 +156,38 @@ RSpec.describe ListHandler, type: :model do
       end
     end
   end
+  describe ".update_item" do
+    context "when the item exist and the parameters are valid" do
+      before(:each) do
+        @todo_list = TodoList.create(code: TodoList.generate_code)
+        params = {
+          code: @todo_list.code,
+          title: "valid Title",
+          content: "valid content"
+        }
+        ListHandler.create_item(params)
+        @todo_item = @todo_list.items.first
+
+        def valid_params
+          valid_params = {
+            id: @todo_item.id,
+            code: @todo_list.code,
+            title: "new title",
+            content: "new content",
+            priority: 3
+          }
+          valid_params
+        end
+      end
+      it "updates the item" do
+        result = ListHandler.update_item(@todo_item.id, valid_params)
+
+        updated_item = TodoItem.find_by(id: @todo_item.id)
+
+        expect(updated_item.title).to eq("new title")
+        expect(updated_item.content).to eq("new content")
+        expect(updated_item.priority).to eq(3)
+      end
+    end
+  end
 end
