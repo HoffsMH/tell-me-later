@@ -24,6 +24,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'puma-rails'
 gem 'responders'
 gem 'faker'
+gem 'rename'
 
 group :development, :test do
   gem 'simplecov'
