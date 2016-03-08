@@ -147,6 +147,29 @@ RSpec.describe Api::V1::TodoItemsController, type: :controller do
           expect(todo_item[:content]).to eq("new content")
         end
       end
+      context "and the parameters are invalid" do
+        before(:each) do
+          def invalid_params
+            invalid_params = {
+              id: @todo_item.id,
+              code: @todo_list.code,
+              title: "",
+              content: "",
+              priority: 3
+            }
+            invalid_params
+          end
+        end
+        it "responds with a 422 error" do
+          put :update, {id: @todo_item.id, todo_item: invalid_params}
+
+          body = JSON.parse(response.body, symbolize_names: true)
+          todo_item = body[:data][:todo_item]
+
+          expect(body[:status]).to eq(422)
+          expect(body[:message][:error]).not_to be_nil
+        end
+      end
     end
   end
 end

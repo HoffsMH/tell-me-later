@@ -11,7 +11,7 @@ module TodoResponses
     TodoResponder.
     groom_response(
     code: 422,
-    resource: {resource.type  => nil },
+    resource: {resource.type  => resource.as_json },
     message: resource.errors.full_messages.join(" "))
   end
 
