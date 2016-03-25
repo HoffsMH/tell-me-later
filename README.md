@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/HoffsMH/todo-timer.png?label=ready&title=Ready)](https://waffle.io/HoffsMH/todo-timer)
-[![Build Status](https://travis-ci.org/HoffsMH/todo-timer.svg?branch=master)](https://travis-ci.org/HoffsMH/todo-timer)
+[![Build Status](https://travis-ci.org/HoffsMH/tell-me-later.svg?branch=master)](https://travis-ci.org/HoffsMH/tell-me-later)
 [![Coverage Status](https://coveralls.io/repos/github/HoffsMH/todo-timer/badge.svg?branch=master)](https://coveralls.io/github/HoffsMH/todo-timer?branch=master)
 
 # [tell-me-later](https://www.google.com)
