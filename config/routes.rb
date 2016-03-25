@@ -6,4 +6,5 @@ Rails.application.routes.draw do
     end
   end
   get "/:code", to: 'react#show'
+  get "/", to: 'react#show'
 end
