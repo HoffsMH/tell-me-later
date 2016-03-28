@@ -2,11 +2,11 @@ module TodoResponder
   def self.code_messages(code, message)
     responses = {
       404 => { error:   message || "Resource not Found." },
-      204 => { success: message || "Success" },
+      201 => { success: message || "Success" },
       200 => { success: message || "Success" },
       422 => { error:   message || "Unprocessable Entity"}
     }
-    responses[code]
+    responses[code] || message
   end
 
   def self.groom_response(args)
