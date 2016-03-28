@@ -22,4 +22,10 @@ class TodoItem < ActiveRecord::Base
   def list_changed!
     list.items.empty? ? list.delete : list.items_changed
   end
+
+  def as_json
+    data = super
+    data[:list_code] = list.code
+    data
+  end
 end
