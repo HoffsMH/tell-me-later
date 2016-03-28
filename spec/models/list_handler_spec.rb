@@ -107,11 +107,11 @@ RSpec.describe ListHandler, type: :model do
         ListHandler.create_item(params)
         ListHandler.create_item(params)
       end
-      it "responds with 204" do
+      it "responds with 200" do
         todo_item = @todo_list.todo_items.first
         result = ListHandler.delete_item(todo_item, {code: @todo_list.code})
 
-        expect(result[:status]).to eq(204)
+        expect(result[:status]).to eq(200)
         expect(result[:message][:success]).not_to be_nil
       end
       it "deletes the item" do
@@ -133,11 +133,11 @@ RSpec.describe ListHandler, type: :model do
         }
         ListHandler.create_item(params)
       end
-      it "responds with 204" do
+      it "responds with 200" do
         todo_item = @todo_list.todo_items.first
         result = ListHandler.delete_item(todo_item,  {code: @todo_list.code})
 
-        expect(result[:status]).to eq(204)
+        expect(result[:status]).to eq(200)
         expect(result[:message][:success]).not_to be_nil
       end
       it "deletes the item" do
