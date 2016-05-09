@@ -2,7 +2,7 @@ module TodoResponses
   def self.resource_created(resource)
     TodoResponder.
     groom_response(
-    code: 204,
+    code: 201,
     resource: {resource.type  => resource.as_json},
     message: "Resource Created")
   end
@@ -18,7 +18,7 @@ module TodoResponses
   def self.resource_deleted(resource)
     TodoResponder.
     groom_response(
-    code: 204,
+    code: 200,
     resource: {resource.type  => resource.as_json},
     message: "Resource Deleted")
   end
@@ -33,7 +33,7 @@ module TodoResponses
   def self.resource_updated(resource)
     TodoResponder.
     groom_response(
-    code: 204,
+    code: 200,
     resource: {resource.type  => resource.as_json},
     message: "Resource Updated")
   end
